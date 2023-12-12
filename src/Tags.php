@@ -113,9 +113,11 @@ class Tags extends Field
 
         $class = get_class($model);
 
-        $class::saved(function ($model) use ($tagNames) {
-            $model->syncTagsWithType($tagNames, $this->meta()['type'] ?? null);
-        });
+        if($class !== "Laravel\Nova\Support\Fluent") {
+            $class::saved(function ($model) use ($tagNames) {
+                $model->syncTagsWithType($tagNames, $this->meta()['type'] ?? null);
+            });
+        }
     }
 
     public function resolveAttribute($resource, $attribute = null)
